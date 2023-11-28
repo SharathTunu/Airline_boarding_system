@@ -56,14 +56,3 @@ class PriorityQueue {
         heap.set(j, temp);
     }
 }
-
-
-// PriorityQueue pq = new PriorityQueue();
-// pq.insert("Task 1", 1);
-// pq.insert("Task 2", 2);
-// pq.insert("Task 3", 3);
-// pq.insert("Task 4", 4);
-//       while (!pq.heap.isEmpty()) {
-//         PriorityQueue.Node max = pq.extractMax();
-//         System.out.println(max.task);
-//     }
