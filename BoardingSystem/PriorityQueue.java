@@ -12,7 +12,7 @@ class PriorityQueue {
     }
     List<Node> heap = new ArrayList<>();
 
-    // Adds a task to the priority queue
+    // Adds a passenger to the priority queue
     public void insert(Passenger traveller) {
         heap.add(new Node(traveller));
         int idx = heap.size() - 1;
@@ -25,7 +25,7 @@ class PriorityQueue {
         }
     }
 
-    // Extracts the task with the highest priority
+    // Extracts the passenger info with the lowest priority value
     public Node extractMin() {
         Node minNode = heap.get(0);
         heap.set(0, heap.get(heap.size() - 1));

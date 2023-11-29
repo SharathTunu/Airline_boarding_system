@@ -21,6 +21,7 @@ public class Boarding {
     public LocalDateTime currDateTime = LocalDateTime.now();
     public Integer totalPassengers = 0;
     private boolean onBoarding = false;
+    public onBoardPassengers manifest = new onBoardPassengers();
 
     private JFrame frame;
     private JPanel panel;
@@ -29,9 +30,10 @@ public class Boarding {
     private JTextField DOB;
     private JTextField bookingClass;
     private JTextField priority;
+    private JTextField searchBox;
 
     public void readFromFile() {
-        // Populates the all tasks list
+        /*Populates the all passengers from the csv file*/
         String csvFile = System.getProperty("user.dir") + "/BoardingSystem/passengerData.csv";
         System.out.println("Reading Data from: " + csvFile);
 
@@ -63,17 +65,19 @@ public class Boarding {
     }
 
     public void boardPassenger() {
+        /* This function is used to take the top of the  queue and add it to the manfiest*/
         if (!this.passengerQ.heap.isEmpty() && this.totalPassengers < 15) {
             PriorityQueue.Node current_passenger = this.passengerQ.extractMin();
             System.out.println("Now boarding: " + current_passenger.traveller.firstName + " priority: " + current_passenger.traveller.priority);
-            /* TODO Add the current_passenger to heaplist*/
+            // Add the passenger details to the manifest, update count and set the onboarding flag to true
+            this.manifest.addPassenger(current_passenger.traveller);
             this.totalPassengers = this.totalPassengers + 1;
             this.onBoarding = true;
-            // Thread.sleep(20*1000);
         }
     }
 
     private void inputPassenger() {
+        /* This function is used to dynamically add the passenger details to the queue */
         Passenger info =new Passenger();
         info.firstName = firstName.getText();
         info.lastName = lastName.getText();
@@ -84,6 +88,11 @@ public class Boarding {
         info.str2date();
         info.str2time();
         this.passengerQ.insert(info);
+    }
+
+    public void findPassenger() {
+        String searchParam = searchBox.getText();
+        this.manifest.searchByName(searchParam);
     }
 
     private JLabel getNewLabel(int x, int y, int width, int height, String labelText) {
@@ -99,16 +108,16 @@ public class Boarding {
     }
     
     public Boarding() {
+        /*GUI to add travellers to wait list and search for passengers from the manifest*/
         panel = new JPanel();
         frame = new JFrame();
-        frame.setSize(350, 300);
+        frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Add passenger details");
 
         frame.add(panel);
-        // panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(null);
-
+        // Add Travellers
         panel.add(this.getNewLabel(10, 20, 80, 25, "First Name"));
         firstName = this.getTxtFeild(100, 20, 165, 25, 20);
         panel.add(firstName);
@@ -132,22 +141,38 @@ public class Boarding {
         JButton button = new JButton("Add");
         button.setBounds(100, 190, 80, 25);
         button.addActionListener(new ActionListener() {
-
+            // Add the new passenger to the wait list
             public void actionPerformed(ActionEvent e) {                
                 inputPassenger();
             }
             
         });
-        panel.add(button);        
+        panel.add(button);
+        
+        // Search bar for passengers
+        searchBox = this.getTxtFeild(10, 250, 205, 25, 40);
+        panel.add(searchBox);
+
+        JButton search = new JButton("search");
+        search.setBounds(225, 250, 80, 25);
+        search.addActionListener(new ActionListener() {
+            // Call the hastable to search functionality
+            public void actionPerformed(ActionEvent e) {                
+                findPassenger();
+            }
+            
+        });
+        panel.add(search);
+
+        panel.add(this.getNewLabel(10, 280, 350, 25, "Search results are displayed in the terminal.."));
         frame.setVisible(true);
     }
 
     public static void main(String args[]) throws InterruptedException {
-        // new Boarding();
         Boarding rs = new Boarding();
         rs.readFromFile();
         while (Duration.between(rs.currDateTime, LocalDateTime.now()).toMinutes() <= 10) {
-            
+            // Run the code for either 10 minutes or until the pasenger count hits 15...
             if (rs.totalPassengers >= 15) {
                 System.out.println("Plane is at full capacity...we have boarded 15 passengers");
                 break;
@@ -161,11 +186,6 @@ public class Boarding {
         if (Duration.between(rs.currDateTime, LocalDateTime.now()).toMinutes() > 10) {
             System.out.println("Its been 10 minutes since boarding started...The gates are closing!!");
         }
-        // while (!rs.passengerQ.heap.isEmpty()) {
-        //     PriorityQueue.Node min = rs.passengerQ.extractMin();
-        //     System.out.println(min.traveller.priority);
-        //     System.out.println(min.traveller.firstName);
-        // }
-        }
+    }
 
 }
