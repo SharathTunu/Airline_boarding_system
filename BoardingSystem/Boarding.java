@@ -58,6 +58,7 @@ public class Boarding {
                 info.str2time();
                 this.passengerQ.insert(info);
             }
+            System.out.println("--------------------------------------------");
         }
         catch (IOException e) {
             e.printStackTrace();
