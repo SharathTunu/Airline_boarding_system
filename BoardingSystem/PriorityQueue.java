@@ -18,7 +18,7 @@ class PriorityQueue {
         int idx = heap.size() - 1;
         while (idx != 0) {
             int parentIdx = (idx - 1) / 2;
-            if (heap.get(parentIdx).traveller.priority > heap.get(idx).traveller.priority) {
+            if (heap.get(parentIdx).traveller.priority < heap.get(idx).traveller.priority) {
                 swap(parentIdx, idx);
                 idx = parentIdx;
             } else {break;}
