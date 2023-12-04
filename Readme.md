@@ -32,6 +32,22 @@
 
 - After the code is run, you can observe the terminal updating with passengers details who are being onboarded every 20 secs
 
+<p align="center">
+  <img src="images/reading_from_csv_file .png" />
+</p>
+
 - You can add passengers to queue at any time and they will be considered for on boarding based on their priority.
 
+<p align="center">
+  <img src="images/Adding_passenger_from_GUI.png" />
+</p>
+
 - To use the search bar please use ```<first name> <lastName>``` together with space seperating them and the result of the search is displayed in the terminal.
+
+<p align="center">
+  <img src="images/Passenger_not_boarded_search.png" />
+</p>
+
+<p align="center">
+  <img src="images/Inflight_pasenger_search.png" />
+</p>
